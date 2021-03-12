@@ -1,39 +1,17 @@
-import { auth } from "../../firebase/firebase"
+import { setUser } from "./authReducer";
 
-const LOADING = 'initial/LOADING'
-const IS_USER_LOGIN = 'initial/IS_USER_LOGIN'
-const SET_USER = 'initial/SET_USER'
+const INITIALIZING = 'initial/INITIALIZING'
 
 const initialState = {
-  loading: true,
-  isUserLogin: false,
-  user: {
-    email: '',
-    uid: ''
-  }
+  initializing: true
 }
 
 export const initialReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOADING:
+    case INITIALIZING:
       return {
         ...state,
-        loading: !state.loading
-      }
-
-    case IS_USER_LOGIN:
-      return {
-        ...state,
-        isUserLogin: action.isUserLogin
-      }
-
-    case SET_USER:
-      return {
-        ...state,
-        user: {
-          email: action.email,
-          uid: action.uid
-        }
+        initializing: action.initializing
       }
 
     default:
@@ -41,18 +19,15 @@ export const initialReducer = (state = initialState, action) => {
   }
 }
 
-export const loadingAC = () => ({ type: LOADING });
-export const isUserLoginAC = (isUserLogin) => ({ type: IS_USER_LOGIN, isUserLogin });
-export const setUserAC = (email, uid) => ({ type: SET_USER, email, uid });
+export const initializingAC = (initializing) => ({ type: INITIALIZING, initializing });
 
 // THUNKS
-export const setUser = () => async (dispatch) => {
-  return await auth.onAuthStateChanged(user => {
-    if (user !== null) {
-      dispatch(isUserLoginAC(true));
-      dispatch(setUserAC(user.email, user.uid))
-    } else {
-      dispatch(isUserLoginAC(false));
-    }
-  })
+export const initialize = () => async (dispatch) => {
+  const promise = dispatch(setUser());
+  await promise
+    .then(() => dispatch(initializingAC(false)))
+    .catch(() => {
+      dispatch(initializingAC(false))
+      throw new Error()
+    })
 }

@@ -1,20 +1,17 @@
 import { Button, Container } from 'react-materialize'
-import { auth, provider } from '../firebase/firebase'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { switchLoading } from '../redux/reducers/loginReducer'
+import { signIn } from '../redux/reducers/authReducer'
 
 const LoginPage = (props) => {
   const history = useHistory();
 
   const signUpHandler = () => {
-    auth.signInWithPopup(provider).then((result) => {
-      history.push('/main');
-    })
+    props.signIn().then(() => history.push('/main'))
   }
 
   return (
-    <div className="App">
+    <>
       <h1 className="main-title">WebChat</h1>
       <Container style={{ textAlign: 'center' }}>
         <Button
@@ -29,18 +26,19 @@ const LoginPage = (props) => {
           Sign in with Google
         </Button>
       </Container>
-    </div>
+    </>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.loginPage.loading
+    loading: state.authPage.loading,
+    isUserLogin: state.authPage.isUserLogin
   }
 }
 
 const mapDispatchToProps = {
-  switchLoading
+  signIn
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
