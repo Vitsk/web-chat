@@ -9,6 +9,8 @@ const initialState = {
   isUserLogin: false,
   user: {
     email: '',
+    displayName: '',
+    photoURL: '',
     uid: ''
   }
 }
@@ -31,7 +33,10 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: {
+          ...state.user,
           email: action.email,
+          displayName: action.displayName,
+          photoURL: action.photoURL,
           uid: action.uid
         }
       }
@@ -43,12 +48,17 @@ export const authReducer = (state = initialState, action) => {
 
 export const switchLoading = () => ({ type: SWITCH_LOADING });
 export const isUserLoginAC = (isUserLogin) => ({ type: IS_USER_LOGIN, isUserLogin });
-export const setUserAC = (email, uid) => ({ type: SET_USER, email, uid });
+export const setUserAC = (email, displayName, photoURL, uid) => ({ 
+  type: SET_USER, 
+  email, 
+  displayName, 
+  photoURL, 
+  uid });
 
 // THUNKS
 export const signIn = () => async (dispatch) => {
   await auth.signInWithPopup(provider).then((result) => {
-    dispatch(setUserAC(result.user.email, result.user.uid))
+    dispatch(setUserAC(result.user.email, result.user.displayName, result.user.photoURL, result.user.uid))
     dispatch(isUserLoginAC(true))
   })
 }
@@ -61,7 +71,7 @@ export const setUser = () => (dispatch) => {
   return new Promise((resolve, reject) => {
     auth.onAuthStateChanged(user => {
       if (user !== null) {
-        dispatch(setUserAC(user.email, user.uid))
+        dispatch(setUserAC(user.email, user.displayName, user.photoURL, user.uid))
         dispatch(isUserLoginAC(true));
         resolve()
       } else {

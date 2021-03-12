@@ -4,7 +4,7 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import "./App.css";
 import { Loader } from "./components/Loader";
 import LoginPage from "./components/LoginPage/LoginPage";
-import Main from "./components/Main";
+import Main from "./components/Main/Main";
 import { initialize } from './redux/reducers/initialReducer';
 
 const App = (props) => {

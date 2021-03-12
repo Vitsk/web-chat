@@ -1,7 +1,7 @@
-import { Button } from "react-materialize"
-import { signOut } from "../redux/reducers/authReducer"
+import { signOut } from "../../redux/reducers/authReducer"
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { SideNavMenu } from "./SideNavMenu"
 
 const Main = (props) => {
   const history = useHistory();
@@ -12,18 +12,11 @@ const Main = (props) => {
 
   return (
     <>
+      <SideNavMenu 
+        user={props.user}
+        signOutHandler={signOutHandler}
+      />
       <h1>Main page</h1>
-      <Button
-        large
-        node="a"
-        style={{
-          marginRight: '5px',
-        }}
-        waves="light"
-        onClick={signOutHandler}
-      >
-        Sign out
-      </Button>
     </>
   )
 }
