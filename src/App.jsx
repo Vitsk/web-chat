@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import "./App.css";
 import { Loader } from "./components/Loader";
-import LoginPage from "./components/LoginPage";
+import LoginPage from "./components/LoginPage/LoginPage";
 import Main from "./components/Main";
 import { initialize } from './redux/reducers/initialReducer';
-import { useHistory } from 'react-router-dom'
 
 const App = (props) => {
   const history = useHistory()

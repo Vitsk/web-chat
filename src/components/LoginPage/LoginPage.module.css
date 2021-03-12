@@ -1,0 +1,17 @@
+.title {
+  text-align: center;
+}
+
+.button {
+  margin-top: 10rem;
+  background-color: #FFFFFF !important;
+  width: 300px !important;
+}
+
+.button .gIcon {
+  margin-top: 18px;
+}
+
+.button .gText {
+  color: black !important;
+}

@@ -1,7 +1,9 @@
 import { Button, Container } from 'react-materialize'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { signIn } from '../redux/reducers/authReducer'
+import { signIn } from '../../redux/reducers/authReducer'
+import styles from './LoginPage.module.css'
+import googleBtn from '../../assets/GoogleButton/btn_google_light_normal_ios.svg'
 
 const LoginPage = (props) => {
   const history = useHistory();
@@ -12,18 +14,25 @@ const LoginPage = (props) => {
 
   return (
     <>
-      <h1 className="main-title">WebChat</h1>
+      <h1 className={styles.title}>Web Chat</h1>
       <Container style={{ textAlign: 'center' }}>
         <Button
           large
-          node="a"
-          style={{
-            marginRight: '5px',
-          }}
           waves="light"
+          className={styles.button}
           onClick={signUpHandler}
         >
-          Sign in with Google
+          <div className='left'>
+            <img
+              src={googleBtn}
+              style={{ marginTop: '7px', marginRight: '8px' }}
+              width={40}
+              alt="googleBtn"
+            />
+          </div>
+          <div className={styles.gText}>
+            Sign in with Google
+          </div>
         </Button>
       </Container>
     </>
