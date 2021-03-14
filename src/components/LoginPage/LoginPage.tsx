@@ -4,8 +4,15 @@ import { connect } from 'react-redux';
 import { signIn } from '../../redux/reducers/authReducer'
 import styles from './LoginPage.module.css'
 import googleBtn from '../../assets/GoogleButton/btn_google_light_normal_ios.svg'
+import { RootState } from '../../redux/store';
 
-const LoginPage = (props) => {
+type PropsType = {
+  loading: boolean,
+  isUserLogin: boolean,
+  signIn: () => Promise<void>
+}
+
+const LoginPage: React.FC<PropsType> = (props): React.ReactElement => {
   const history = useHistory();
 
   const signUpHandler = () => {
@@ -39,7 +46,7 @@ const LoginPage = (props) => {
   )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
   return {
     loading: state.authPage.loading,
     isUserLogin: state.authPage.isUserLogin

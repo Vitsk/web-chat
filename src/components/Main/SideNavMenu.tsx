@@ -2,18 +2,21 @@ import React from 'react'
 import { Button, SideNav, SideNavItem } from 'react-materialize'
 import sidenavImg from '../../assets/sidenavImg.jpg'
 
-const MyButton = React.forwardRef( (props, ref) => <Button {...props}>&#8801;</Button> )
+type PropsType = {
+  user: {
+    email: string;
+    displayName: string;
+    photoURL: string;
+    uid: string;
+  },
+  signOutHandler: () => void
+}
 
-export const SideNavMenu = (props) => {
+const MyButton = React.forwardRef<HTMLButtonElement, any>( (props, ref) => <Button {...props}>&#8801;</Button> )
+
+export const SideNavMenu: React.FC<PropsType> = (props): React.ReactElement => {
   return (
     <div>
-      {/* <style>
-        {`
-            #root > div > div {
-              z-index: 99999 !important;
-            }
-          `}
-      </style> */}
       <SideNav
         id="SideNav-10"
         options={{

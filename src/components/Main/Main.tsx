@@ -2,11 +2,22 @@ import { signOut } from "../../redux/reducers/authReducer"
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { SideNavMenu } from "./SideNavMenu"
+import { RootState } from "../../redux/store"
 
-const Main = (props) => {
+type PropsType = {
+  user: {
+    email: string;
+    displayName: string;
+    photoURL: string;
+    uid: string;
+  },
+  signOut: () => Promise<void>
+}
+
+const Main: React.FC<PropsType> = (props): React.ReactElement => {
   const history = useHistory();
 
-  const signOutHandler = () => {
+  const signOutHandler = (): void => {
     props.signOut().then(() => history.push('/'))
   }
 
@@ -21,7 +32,7 @@ const Main = (props) => {
   )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
   return {
     user: state.authPage.user
   }
