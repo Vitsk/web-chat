@@ -3,17 +3,17 @@ import thunkMiddleware from 'redux-thunk'
 import { initialReducer } from './reducers/initialReducer';
 import { authReducer } from './reducers/authReducer';
 
-const reducers = combineReducers({
+const rootReducer = combineReducers({
   initialApp: initialReducer,
   authPage: authReducer,
 })
 
-export type RootState = ReturnType<typeof reducers>
+export type TRootReducer = ReturnType<typeof rootReducer>
 
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store: Store = createStore(
-  reducers,
+  rootReducer,
   composeEnhancers(applyMiddleware(thunkMiddleware))
 );

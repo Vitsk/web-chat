@@ -2,7 +2,7 @@ import { signOut } from "../../redux/reducers/authReducer"
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { SideNavMenu } from "./SideNavMenu"
-import { RootState } from "../../redux/store"
+import { TRootReducer } from "../../redux/store"
 
 type PropsType = {
   user: {
@@ -32,7 +32,7 @@ const Main: React.FC<PropsType> = (props): React.ReactElement => {
   )
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: TRootReducer) => {
   return {
     user: state.authPage.user
   }

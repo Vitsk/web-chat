@@ -1,25 +1,23 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import "./App.css";
 import { Loader } from "./components/Loader";
 import LoginPage from "./components/LoginPage/LoginPage";
 import Main from "./components/Main/Main";
 import { initialize } from './redux/reducers/initialReducer';
-import { RootState } from "./redux/store";
+import { TRootReducer } from "./redux/store";
 
 type PropsType = {
-  initializing: boolean,
-  initialize: () => Promise<void>
+  initializing: boolean
+  isUserLogin: boolean
+  initialize: () => void
 }
 
 const App: React.FC<PropsType> = (props): React.ReactElement => {
-  const history = useHistory()
 
   useEffect(() => {
     props.initialize()
-      .then(() => history.push('/main'))
-      .catch(() => history.push('/'))
     // eslint-disable-next-line
   }, [])
 
@@ -30,10 +28,10 @@ const App: React.FC<PropsType> = (props): React.ReactElement => {
       {props.initializing ? <Loader /> :
         <Switch>
           <Route exact path='/'>
-            <LoginPage />
+            { props.isUserLogin ? <Redirect to='/main' /> : <LoginPage /> }
           </Route>
           <Route exact path='/main'>
-            <Main />
+            { props.isUserLogin ? <Main /> : <Redirect to='/' /> }
           </Route>
         </Switch>}
 
@@ -41,9 +39,10 @@ const App: React.FC<PropsType> = (props): React.ReactElement => {
   );
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: TRootReducer) => {
   return {
     initializing: state.initialApp.initializing,
+    isUserLogin: state.authPage.isUserLogin
   }
 }
 

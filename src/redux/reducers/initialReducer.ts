@@ -1,23 +1,25 @@
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { setUser } from "./authReducer";
 
 enum ActionTypes {
   INITIALIZING = 'initial/INITIALIZING'
 }
 
-interface InitialState {
+type InitialState = {
   initializing: boolean
 }
 
-interface IAction {
+type TAction = {
   type: ActionTypes.INITIALIZING,
-  initializing: boolean
+  initializing: boolean,
 }
 
 const initialState: InitialState = {
   initializing: true
 }
 
-export const initialReducer = (state = initialState, action: IAction) => {
+export const initialReducer = (state = initialState, action: TAction) => {
   switch (action.type) {
     case ActionTypes.INITIALIZING:
       return {
@@ -30,15 +32,18 @@ export const initialReducer = (state = initialState, action: IAction) => {
   }
 }
 
-export const initializingAC = (initializing: boolean) => ({ type: ActionTypes.INITIALIZING, initializing });
+type TInitializingAC = {
+  type: typeof ActionTypes.INITIALIZING, 
+  initializing: boolean
+}
+export const initializingAC = (initializing: boolean): TInitializingAC => ({ type: ActionTypes.INITIALIZING, initializing });
+
 
 // THUNKS
-export const initialize = () => async (dispatch: any) => {
+export const initialize = () => async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
   const promise = dispatch(setUser());
-  await promise
+
+  Promise.all([promise])
     .then(() => dispatch(initializingAC(false)))
-    .catch(() => {
-      dispatch(initializingAC(false))
-      throw new Error()
-    })
+    .catch(() => dispatch(initializingAC(false)))
 }

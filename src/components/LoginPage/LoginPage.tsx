@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { signIn } from '../../redux/reducers/authReducer'
 import styles from './LoginPage.module.css'
 import googleBtn from '../../assets/GoogleButton/btn_google_light_normal_ios.svg'
-import { RootState } from '../../redux/store';
+import { TRootReducer } from '../../redux/store';
 
 type PropsType = {
   loading: boolean,
@@ -46,7 +46,7 @@ const LoginPage: React.FC<PropsType> = (props): React.ReactElement => {
   )
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: TRootReducer) => {
   return {
     loading: state.authPage.loading,
     isUserLogin: state.authPage.isUserLogin
