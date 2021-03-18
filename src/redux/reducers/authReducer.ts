@@ -1,17 +1,16 @@
-import { AnyAction, Dispatch } from "redux";
+import { UserCredential } from '@firebase/auth-types';
+import { ActionCreator, AnyAction } from "redux";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { auth, provider } from "../../firebase/firebase";
 
-// Types
 enum ActionTypes {
   SWITCH_LOADING = 'login/SWITCH_LOADING',
   IS_USER_LOGIN = 'login/IS_USER_LOGIN',
   SET_USER = 'login/SET_USER'
 }
 
-type TAction = TSwitchLoading | TIsUserLoginAC | TSetUserAC
-
-type InitialState = {
+// Type for initial state
+type TInitialState = {
   loading: boolean,
   isUserLogin: boolean,
   user: {
@@ -22,8 +21,32 @@ type InitialState = {
   }
 }
 
+// Types for Action creators
+type TSwitchLoading = {
+  type: typeof ActionTypes.SWITCH_LOADING,
+  loading: boolean
+}
+type TIsUserLoginAC = {
+  type: typeof ActionTypes.IS_USER_LOGIN,
+  isUserLogin: boolean
+}
+type TSetUserAC = {
+  type: typeof ActionTypes.SET_USER,
+  email: string
+  displayName: string
+  photoURL: string
+  uid: string
+}
+
+type TAction = TSwitchLoading | TIsUserLoginAC | TSetUserAC;
+
+// Types for Thunks
+type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, AnyAction>;
+type TThunkDispatch = ThunkDispatch<TInitialState, null, any>
+
+
 // Reducer
-const initialState: InitialState = {
+const initialState: TInitialState = {
   loading: false,
   isUserLogin: false,
   user: {
@@ -34,8 +57,8 @@ const initialState: InitialState = {
   }
 }
 
-export const authReducer = (state = initialState, action: TAction): InitialState => {
-  switch(action.type) {
+export const authReducer = (state = initialState, action: TAction): TInitialState => {
+  switch (action.type) {
     case ActionTypes.SWITCH_LOADING:
       return {
         ...state,
@@ -60,52 +83,44 @@ export const authReducer = (state = initialState, action: TAction): InitialState
         }
       }
 
-    default: 
+    default:
       return state;
   }
 }
 
-type TSwitchLoading = {
-  type: typeof ActionTypes.SWITCH_LOADING,
-  loading: boolean
-}
-export const switchLoading = (loading: boolean): TSwitchLoading => ({ type: ActionTypes.SWITCH_LOADING, loading });
+// Action creators
+export const switchLoading: ActionCreator<TSwitchLoading> = (loading): TSwitchLoading => (
+  { type: ActionTypes.SWITCH_LOADING, loading }
+);
+export const isUserLoginAC: ActionCreator<TIsUserLoginAC> = (isUserLogin): TIsUserLoginAC => (
+  { type: ActionTypes.IS_USER_LOGIN, isUserLogin }
+);
 
-type TIsUserLoginAC = {
-  type: typeof ActionTypes.IS_USER_LOGIN,
-  isUserLogin: boolean
-}
-export const isUserLoginAC = (isUserLogin: boolean): TIsUserLoginAC => ({ type: ActionTypes.IS_USER_LOGIN, isUserLogin });
+export const setUserAC: ActionCreator<TSetUserAC> = (email, displayName, photoURL, uid): TSetUserAC => (
+  {
+    type: ActionTypes.SET_USER,
+    email,
+    displayName,
+    photoURL,
+    uid
+  }
+);
 
-type TSetUserAC = {
-  type: typeof ActionTypes.SET_USER, 
-  email: string
-  displayName: string
-  photoURL: string
-  uid: string
-}
-export const setUserAC = (email: string, displayName: string, photoURL: string, uid: string): TSetUserAC => ({ 
-  type: ActionTypes.SET_USER, 
-  email, 
-  displayName, 
-  photoURL, 
-  uid });
-
-// THUNKS
-export const signIn = () => async (dispatch: Dispatch<TAction>): Promise<void> => {
-  await auth.signInWithPopup(provider).then((result: any) => {
-    dispatch(setUserAC(result.user.email, result.user.displayName, result.user.photoURL, result.user.uid))
+// Thunks
+export const signIn: ActionCreator<ThunkResult<Promise<void>>> = (): ThunkResult<Promise<void>> => async (dispatch: TThunkDispatch): Promise<void> => {
+  await auth.signInWithPopup(provider).then((result: UserCredential) => {
+    dispatch(setUserAC(result.user?.email, result.user?.displayName, result.user?.photoURL, result.user?.uid))
     dispatch(isUserLoginAC(true))
   })
 }
 
-export const signOut = () => async (dispatch: Dispatch<TAction>): Promise<void> => {
+export const signOut: ActionCreator<ThunkResult<Promise<void>>> = (): ThunkResult<Promise<void>> => async (): Promise<void> => {
   await auth.signOut()
 }
 
-export const setUser = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+export const setUser: ActionCreator<ThunkResult<Promise<void>>> = (): ThunkResult<Promise<void>> => (dispatch: TThunkDispatch): Promise<void> => {
   return new Promise((resolve: () => void, reject: () => void) => {
-    auth.onAuthStateChanged((user: any) => {
+    auth.onAuthStateChanged((user) => {
       if (user !== null) {
         dispatch(setUserAC(user.email, user.displayName, user.photoURL, user.uid))
         dispatch(isUserLoginAC(true));

@@ -21,8 +21,6 @@ const App: React.FC<PropsType> = (props): React.ReactElement => {
     // eslint-disable-next-line
   }, [])
 
-  
-
   return (
     <>
       {props.initializing ? <Loader /> :
