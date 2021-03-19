@@ -1,8 +1,12 @@
-import { signOut } from "../../redux/reducers/authReducer"
+import { signOut } from "../../../redux/reducers/authReducer"
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { SideNavMenu } from "./SideNavMenu"
-import { TRootReducer } from "../../redux/store"
+import { SideNavMenu } from "../SideNavMenu"
+import { TRootReducer } from "../../../redux/store"
+import { Container } from "react-materialize"
+import { InputField } from "./InputField"
+import { MessagesArea } from "./Messages/MessagesArea"
+// import styles from './Main.module.css'
 
 type PropsType = {
   user: {
@@ -23,11 +27,15 @@ const Main: React.FC<PropsType> = (props): React.ReactElement => {
 
   return (
     <>
-      <SideNavMenu 
+      <SideNavMenu
         user={props.user}
         signOutHandler={signOutHandler}
       />
-      <h1>Main page</h1>
+
+      <Container>
+        <MessagesArea />
+        <InputField />
+      </Container>
     </>
   )
 }

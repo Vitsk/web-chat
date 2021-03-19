@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import "./App.css";
 import { Loader } from "./components/Loader";
 import LoginPage from "./components/LoginPage/LoginPage";
-import Main from "./components/Main/Main";
+import Main from "./components/Main/Main/Main";
 import { initialize } from './redux/reducers/initialReducer';
 import { TRootReducer } from "./redux/store";
 
