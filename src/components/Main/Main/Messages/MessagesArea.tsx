@@ -1,13 +1,20 @@
 import React from 'react';
+import { TMessages } from '../../../../redux/reducers/mainReducer';
 import { Message } from './Message';
 import styles from './MessagesArea.module.css'
 
-export const MessagesArea: React.FC = (): React.ReactElement => {
+type TProps = {
+  messages: TMessages[]
+}
+
+export const MessagesArea: React.FC<TProps> = (props): React.ReactElement => {
   return (
     <div className={styles.messageContainer}>
-      <Message own={true} />
-      <Message own={false} />
-      <Message own={true} />
+      {
+        props.messages.map((message, idx) => (
+          <Message key={idx} own={message.own} text={message.text} />
+        ))
+      }
     </div>
   )
 }

@@ -2,10 +2,12 @@ import { createStore, combineReducers, applyMiddleware, compose, Store } from 'r
 import thunkMiddleware from 'redux-thunk'
 import { initialReducer } from './reducers/initialReducer';
 import { authReducer } from './reducers/authReducer';
+import { mainReducer } from './reducers/mainReducer';
 
 const rootReducer = combineReducers({
   initialApp: initialReducer,
   authPage: authReducer,
+  mainPage: mainReducer
 })
 
 export type TRootReducer = ReturnType<typeof rootReducer>

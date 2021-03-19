@@ -1,4 +1,5 @@
 import { signOut } from "../../../redux/reducers/authReducer"
+import { fetchMessages, sendMessage, TMessages } from "../../../redux/reducers/mainReducer"
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { SideNavMenu } from "../SideNavMenu"
@@ -6,6 +7,7 @@ import { TRootReducer } from "../../../redux/store"
 import { Container } from "react-materialize"
 import { InputField } from "./InputField"
 import { MessagesArea } from "./Messages/MessagesArea"
+import { useEffect } from "react"
 // import styles from './Main.module.css'
 
 type PropsType = {
@@ -15,14 +17,28 @@ type PropsType = {
     photoURL: string;
     uid: string;
   },
-  signOut: () => Promise<void>
+  messages: TMessages[],
+  signOut: () => Promise<void>,
+  fetchMessages: (uid: string) => void
+  sendMessage: (id: number, uid: string, text: string) => void
 }
 
+// Component
 const Main: React.FC<PropsType> = (props): React.ReactElement => {
   const history = useHistory();
 
+  useEffect(() => {
+    props.fetchMessages(props.user.uid);
+    // eslint-disable-next-line
+  }, [])
+
+  // Handlers
   const signOutHandler = (): void => {
     props.signOut().then(() => history.push('/'))
+  }
+
+  const sendMessageHandler = (text: string): void => {
+    props.sendMessage(Date.now(), props.user.uid, text)
   }
 
   return (
@@ -33,8 +49,8 @@ const Main: React.FC<PropsType> = (props): React.ReactElement => {
       />
 
       <Container>
-        <MessagesArea />
-        <InputField />
+        <MessagesArea messages={props.messages} />
+        <InputField sendMessageHandler={sendMessageHandler} />
       </Container>
     </>
   )
@@ -42,8 +58,15 @@ const Main: React.FC<PropsType> = (props): React.ReactElement => {
 
 const mapStateToProps = (state: TRootReducer) => {
   return {
-    user: state.authPage.user
+    user: state.authPage.user,
+    messages: state.mainPage.messages
   }
 }
 
-export default connect(mapStateToProps, { signOut })(Main)
+const mapDispatchToProps = {
+  signOut,
+  fetchMessages,
+  sendMessage
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main)
