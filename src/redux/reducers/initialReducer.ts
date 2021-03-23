@@ -1,4 +1,3 @@
-import { ActionCreator, AnyAction } from "redux";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { setUser } from "./authReducer";
 
@@ -11,20 +10,15 @@ type TInitialState = {
   initializing: boolean
 }
 
-// Type for action
-type TAction = {
-  type: ActionTypes.INITIALIZING,
-  initializing: boolean,
-}
-
 // Type for action creators
 type TInitializingAC = {
   type: typeof ActionTypes.INITIALIZING, 
   initializing: boolean
 }
+type TAction = TInitializingAC;
 
 // Type for Thunks
-type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, AnyAction>;
+type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, TAction>;
 type TThunkDispatch = ThunkDispatch<TInitialState, null, any>
 
 const initialState: TInitialState = {
@@ -45,13 +39,13 @@ export const initialReducer = (state = initialState, action: TAction) => {
 }
 
 
-export const initializingAC: ActionCreator<TInitializingAC> = (initializing): TInitializingAC => (
+export const initializingAC = (initializing: boolean): TInitializingAC => (
   { type: ActionTypes.INITIALIZING, initializing }
 );
 
 
 // THUNKS
-export const initialize: ActionCreator<ThunkResult<Promise<void>>> = (): ThunkResult<Promise<void>> => async (dispatch: TThunkDispatch): Promise<void> => {
+export const initialize= (): ThunkResult<Promise<void>> => async (dispatch: TThunkDispatch): Promise<void> => {
   const promise = dispatch(setUser());
 
   Promise.all([promise])

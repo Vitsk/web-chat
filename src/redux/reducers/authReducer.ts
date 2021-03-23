@@ -1,6 +1,6 @@
 import { UserCredential } from '@firebase/auth-types';
-import { ActionCreator, AnyAction } from "redux";
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { ActionCreator } from "redux";
+import { ThunkAction } from "redux-thunk";
 import { auth, provider } from "../../firebase/firebase";
 
 enum ActionTypes {
@@ -41,8 +41,8 @@ type TSetUserAC = {
 type TAction = TSwitchLoading | TIsUserLoginAC | TSetUserAC;
 
 // Types for Thunks
-type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, AnyAction>;
-type TThunkDispatch = ThunkDispatch<TInitialState, null, any>
+type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, TAction>;
+// type TThunkDispatch = ThunkDispatch<TInitialState, null, any>
 
 
 // Reducer
@@ -107,18 +107,18 @@ export const setUserAC: ActionCreator<TSetUserAC> = (email, displayName, photoUR
 );
 
 // Thunks
-export const signIn: ActionCreator<ThunkResult<Promise<void>>> = (): ThunkResult<Promise<void>> => async (dispatch: TThunkDispatch): Promise<void> => {
+export const signIn = (): ThunkResult<Promise<void>> => async (dispatch): Promise<void> => {
   await auth.signInWithPopup(provider).then((result: UserCredential) => {
     dispatch(setUserAC(result.user?.email, result.user?.displayName, result.user?.photoURL, result.user?.uid))
     dispatch(isUserLoginAC(true))
   })
 }
 
-export const signOut: ActionCreator<ThunkResult<Promise<void>>> = (): ThunkResult<Promise<void>> => async (): Promise<void> => {
+export const signOut = (): ThunkResult<Promise<void>> => async (): Promise<void> => {
   await auth.signOut()
 }
 
-export const setUser: ActionCreator<ThunkResult<Promise<void>>> = (): ThunkResult<Promise<void>> => (dispatch: TThunkDispatch): Promise<void> => {
+export const setUser = (): ThunkResult<Promise<void>> => (dispatch): Promise<void> => {
   return new Promise((resolve: () => void, reject: () => void) => {
     auth.onAuthStateChanged((user) => {
       if (user !== null) {

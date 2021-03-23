@@ -1,5 +1,5 @@
-import { ActionCreator, AnyAction } from "redux";
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { ActionCreator } from "redux";
+import { ThunkAction } from "redux-thunk";
 import { database } from "../../firebase/firebase";
 
 enum ActionTypes {
@@ -31,8 +31,8 @@ type TSendMessage = {
 type TAction = TFetchMessages | TSendMessage
 
 // Types for Thunks
-type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, AnyAction>;
-type TThunkDispatch = ThunkDispatch<TInitialState, null, any>
+type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, TAction>;
+// type TThunkDispatch = ThunkDispatch<TInitialState, null, any>
 
 // Reducer
 const initialState: TInitialState = {
@@ -64,7 +64,7 @@ const _fetchMessages: ActionCreator<TFetchMessages> = (messages): TFetchMessages
 // })
 
 // Thunks
-export const fetchMessages: ActionCreator<ThunkResult<void>> = (uid: string): ThunkResult<void> => (dispatch: TThunkDispatch): void => {
+export const fetchMessages = (uid: string): ThunkResult<void> => (dispatch): void => {
   database.ref('messages/').on('value', (snapshot) => {
     const data = snapshot.val();
 
@@ -79,7 +79,11 @@ export const fetchMessages: ActionCreator<ThunkResult<void>> = (uid: string): Th
   })
 }
 
-export const sendMessage: ActionCreator<ThunkResult<void>> = (id: number, uid: string, text: string): ThunkResult<void> => (dispatch: TThunkDispatch): void => {
+export const sendMessage = (
+  id: number, 
+  uid: string, 
+  text: string
+): ThunkResult<void> => (): void => {
   database.ref(`messages/${id}`).update({
     text,
     uid

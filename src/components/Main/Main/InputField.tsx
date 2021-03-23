@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { Button, Icon, TextInput } from 'react-materialize'
 
 type TProps = {
@@ -8,16 +8,16 @@ type TProps = {
 export const InputField: React.FC<TProps> = (props): React.ReactElement => {
   const [inputText, setInputText] = useState<string>('');
 
-  const submitSendHandler = (e: any) => {
+  const submitSendHandler = (e: FormEvent) => {
     e.preventDefault();
-    props.sendMessageHandler(inputText)
+    props.sendMessageHandler(inputText);
+    setInputText('');
   }
 
   return (
     <form onSubmit={submitSendHandler}>
       <TextInput
         id="TextInput-4"
-        label="First Name"
         value={inputText}
         onChange={(e) => setInputText(e.target.value)}
       />
