@@ -9,7 +9,7 @@ type TProps = {
 
 export const MessagesArea: React.FC<TProps> = (props): React.ReactElement => {
   return (
-    <div className={styles.messageContainer}>
+    <div className={styles.messagesContainer}>
       {
         props.messages.map((message, idx) => (
           <Message key={idx} own={message.own} text={message.text} />

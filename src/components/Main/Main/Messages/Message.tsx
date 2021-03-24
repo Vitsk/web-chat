@@ -9,7 +9,7 @@ type TProps = {
 export const Message: React.FC<TProps> = (props): React.ReactElement => {
   return (
     <>
-      <div className={`${props.own ? styles.ownMessage : styles.message}`}>
+      <div className={`${styles.message} ${props.own ? styles.ownMessage : styles.incomingMessage}`}>
         <p>{ props.text }</p>
       </div>
     </>
