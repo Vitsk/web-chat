@@ -3,14 +3,20 @@ import styles from './MessagesArea.module.css'
 
 type TProps = {
   own: boolean,
-  text: string
+  text: string,
+  profileIcon: string
 }
 
 export const Message: React.FC<TProps> = (props): React.ReactElement => {
   return (
     <>
-      <div className={`${styles.message} ${props.own ? styles.ownMessage : styles.incomingMessage}`}>
-        <p>{ props.text }</p>
+      <div className={styles.messageContainer}>
+        <div className={`${styles.message} ${props.own ? styles.ownMessage : styles.incomingMessage}`}>
+          <p>{props.text}</p>
+        </div>
+        {props.own && <div className={styles.profileIcon}>
+          <img className={styles.profileIconImg} src={props.profileIcon} alt="" />
+        </div>}
       </div>
     </>
   )

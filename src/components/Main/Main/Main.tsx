@@ -49,7 +49,10 @@ const Main: React.FC<PropsType> = (props): React.ReactElement => {
       />
 
       <Container>
-        <MessagesArea messages={props.messages} />
+        <MessagesArea 
+          messages={props.messages}
+          profileIcon={props.user.photoURL}
+        />
         <InputField sendMessageHandler={sendMessageHandler} />
       </Container>
     </>
