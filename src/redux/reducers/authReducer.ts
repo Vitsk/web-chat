@@ -37,15 +37,13 @@ type TSetUserAC = {
   photoURL: string
   uid: string
 }
-
 type TAction = TSwitchLoading | TIsUserLoginAC | TSetUserAC;
 
 // Types for Thunks
 type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, TAction>;
-// type TThunkDispatch = ThunkDispatch<TInitialState, null, any>
 
+// ========================================================================
 
-// Reducer
 const initialState: TInitialState = {
   loading: false,
   isUserLogin: false,

@@ -32,9 +32,9 @@ type TAction = TFetchMessages | TSendMessage
 
 // Types for Thunks
 type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, TAction>;
-// type TThunkDispatch = ThunkDispatch<TInitialState, null, any>
 
-// Reducer
+// ===========================================================================
+
 const initialState: TInitialState = {
   messages: []
 }

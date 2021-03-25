@@ -21,6 +21,8 @@ type TAction = TInitializingAC;
 type ThunkResult<R> = ThunkAction<R, TInitialState, undefined, TAction>;
 type TThunkDispatch = ThunkDispatch<TInitialState, null, any>
 
+// ========================================================================
+
 const initialState: TInitialState = {
   initializing: true
 }
