@@ -5,10 +5,6 @@
   overflow-y: scroll;
 }
 
-/* .messageContainer {
-  width: 100%;
-} */
-
 .messageWrapper {
   display: flex;
   align-items: flex-end;
@@ -18,7 +14,8 @@
 
 .messageWrapper.incomingMessage {
   margin-right: auto;
-  justify-content: flex-start;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
 }
 
 .messageWrapper.ownMessage {

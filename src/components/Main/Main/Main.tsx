@@ -20,7 +20,7 @@ type PropsType = {
   messages: TMessages[],
   signOut: () => Promise<void>,
   fetchMessages: (uid: string) => void
-  sendMessage: (id: number, uid: string, text: string) => void
+  sendMessage: (id: number, uid: string, photoURL: string, text: string) => void
 }
 
 // Component
@@ -38,7 +38,7 @@ const Main: React.FC<PropsType> = (props): React.ReactElement => {
   }
 
   const sendMessageHandler = (text: string): void => {
-    props.sendMessage(Date.now(), props.user.uid, text)
+    props.sendMessage(Date.now(), props.user.uid, props.user.photoURL, text)
   }
 
   return (
@@ -49,10 +49,7 @@ const Main: React.FC<PropsType> = (props): React.ReactElement => {
       />
 
       <Container>
-        <MessagesArea 
-          messages={props.messages}
-          profileIcon={props.user.photoURL}
-        />
+        <MessagesArea messages={props.messages} />
         <InputField sendMessageHandler={sendMessageHandler} />
       </Container>
     </>

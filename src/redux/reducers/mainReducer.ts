@@ -12,6 +12,7 @@ export type TMessages = {
   id: string,
   text: string,
   uid: string,
+  photoURL: string,
   own: boolean
 }
 
@@ -81,11 +82,13 @@ export const fetchMessages = (uid: string): ThunkResult<void> => (dispatch): voi
 
 export const sendMessage = (
   id: number, 
-  uid: string, 
+  uid: string,
+  photoURL: string, 
   text: string
 ): ThunkResult<void> => (): void => {
   database.ref(`messages/${id}`).update({
     text,
+    photoURL,
     uid
   })
 }

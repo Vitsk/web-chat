@@ -5,7 +5,6 @@ import styles from './MessagesArea.module.css'
 
 type TProps = {
   messages: TMessages[],
-  profileIcon: string
 }
 
 export const MessagesArea: React.FC<TProps> = (props): React.ReactElement => {
@@ -17,7 +16,7 @@ export const MessagesArea: React.FC<TProps> = (props): React.ReactElement => {
             key={idx} 
             own={message.own} 
             text={message.text} 
-            profileIcon={props.profileIcon}
+            profileIcon={message.photoURL}
           />
         ))
       }
