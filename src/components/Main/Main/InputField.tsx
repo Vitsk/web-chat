@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from 'react'
-import { Button, Icon, TextInput } from 'react-materialize'
+import { Button, Container, Icon, TextInput } from 'react-materialize'
 
 type TProps = {
   sendMessageHandler: (text: string) => void
@@ -16,20 +16,23 @@ export const InputField: React.FC<TProps> = (props): React.ReactElement => {
 
   return (
     <form onSubmit={submitSendHandler}>
-      <TextInput
-        id="TextInput-4"
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-      />
-      <Button
-        className="blue"
-        floating
-        icon={<Icon>{'>'}</Icon>}
-        large
-        node="button"
-        waves="light"
-        style={{ float: 'right' }}
-      />
+      <Container>
+        <TextInput
+          id="TextInput-4"
+          value={inputText}
+          placeholder='Enter a text'
+          onChange={(e) => setInputText(e.target.value)}
+        />
+        <Button
+          className="blue"
+          floating
+          icon={<Icon>{'>'}</Icon>}
+          large
+          node="button"
+          waves="light"
+          style={{ float: 'right' }}
+        />
+      </Container>
     </form>
   )
 }
