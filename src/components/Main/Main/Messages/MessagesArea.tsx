@@ -5,11 +5,12 @@ import styles from './MessagesArea.module.css'
 
 type TProps = {
   messages: TMessages[],
+  messageAreaRef: React.RefObject<HTMLDivElement>
 }
 
 export const MessagesArea: React.FC<TProps> = (props): React.ReactElement => {
   return (
-    <div className={styles.messagesArea}>
+    <div className={styles.messagesArea} ref={props.messageAreaRef}>
       {
         props.messages.map((message, idx) => (
           <Message 

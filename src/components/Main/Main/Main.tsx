@@ -7,7 +7,7 @@ import { TRootReducer } from "../../../redux/store"
 import { Container } from "react-materialize"
 import { InputField } from "./InputField"
 import { MessagesArea } from "./Messages/MessagesArea"
-import { useEffect } from "react"
+import { createRef, useEffect } from "react"
 // import styles from './Main.module.css'
 
 type PropsType = {
@@ -26,6 +26,7 @@ type PropsType = {
 // Component
 const Main: React.FC<PropsType> = (props): React.ReactElement => {
   const history = useHistory();
+  const messageAreaRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
     props.fetchMessages(props.user.uid);
@@ -39,6 +40,7 @@ const Main: React.FC<PropsType> = (props): React.ReactElement => {
 
   const sendMessageHandler = (text: string): void => {
     props.sendMessage(Date.now(), props.user.uid, props.user.photoURL, text)
+    messageAreaRef.current?.scrollTo(0, messageAreaRef.current?.scrollHeight)
   }
 
   return (
@@ -49,7 +51,10 @@ const Main: React.FC<PropsType> = (props): React.ReactElement => {
       />
 
       <Container>
-        <MessagesArea messages={props.messages} />
+        <MessagesArea 
+          messages={props.messages} 
+          messageAreaRef={messageAreaRef}
+        />
         <InputField sendMessageHandler={sendMessageHandler} />
       </Container>
     </>

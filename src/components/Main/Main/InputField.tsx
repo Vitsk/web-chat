@@ -10,7 +10,9 @@ export const InputField: React.FC<TProps> = (props): React.ReactElement => {
 
   const submitSendHandler = (e: FormEvent) => {
     e.preventDefault();
-    props.sendMessageHandler(inputText);
+    if (inputText) {
+      props.sendMessageHandler(inputText);
+    }
     setInputText('');
   }
 
