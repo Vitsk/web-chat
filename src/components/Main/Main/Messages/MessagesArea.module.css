@@ -9,7 +9,7 @@
 .messageWrapper {
   display: flex;
   align-items: flex-end;
-  max-width: 200px;
+  max-width: 300px;
   margin-right: 10px;
 }
 
@@ -26,7 +26,7 @@
 
 .message {
   width: max-content;
-  /* max-width: 300px; */
+  max-width: 300px;
   border: 1px solid #d8d8d8;
   padding: 5px 10px;
   box-shadow: 3px 3px 3px #a3a3a3;
@@ -67,4 +67,12 @@
 ::-webkit-scrollbar-thumb {
   background: rgb(151, 151, 151);
   border-radius: 10px;
+}
+
+
+/* Media */
+@media(max-width: 375px) {
+  .message {
+    max-width: 160px;
+  }
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { TMessages } from '../../../../redux/reducers/mainReducer';
+import ContextMenuBody from '../ContextMenuBody/ContextMenuBody';
 import { Message } from './Message';
-import styles from './MessagesArea.module.css'
+import styles from './MessagesArea.module.css';
 
 type TProps = {
   messages: TMessages[],
@@ -10,17 +11,23 @@ type TProps = {
 
 export const MessagesArea: React.FC<TProps> = (props): React.ReactElement => {
   return (
-    <div className={styles.messagesArea} ref={props.messageAreaRef}>
-      {
-        props.messages.map((message, idx) => (
-          <Message 
-            key={idx} 
-            own={message.own} 
-            text={message.text} 
-            profileIcon={message.photoURL}
-          />
-        ))
-      }
-    </div>
+    <>
+
+      <div className={styles.messagesArea} ref={props.messageAreaRef}>
+        {
+          props.messages.map((message, idx) => (
+            <Message
+              key={idx}
+              idx={idx}
+              own={message.own}
+              text={message.text}
+              profileIcon={message.photoURL}
+            />
+          ))
+        }
+      </div>
+
+      <ContextMenuBody />
+    </>
   )
 }
